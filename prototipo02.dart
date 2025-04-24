@@ -1,3 +1,4 @@
+
 //PERFIL DE ARTISTA MUSICAL
 
 import 'package:flutter/material.dart';
@@ -141,7 +142,7 @@ class _ArtistAppBar extends StatelessWidget implements PreferredSizeWidget {
   Widget build(BuildContext context) {
     return AppBar(
       title: Text('Perfil de $artistName'),
-      backgroundColor: Theme.of(context).colorScheme.primary,
+      backgroundColor: Colors.black,
       foregroundColor: Theme.of(context).colorScheme.onPrimary,
     );
   }
