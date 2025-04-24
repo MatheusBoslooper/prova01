@@ -2,10 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
 void main() {
-  runApp(ArtistProfileApp());
+  runApp(const ArtistProfileApp());
 }
 
 class ArtistProfileApp extends StatelessWidget {
+  const ArtistProfileApp({super.key});
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -24,30 +26,27 @@ class ArtistProfileApp extends StatelessWidget {
           bodyMedium: TextStyle(fontSize: 14, color: Colors.black54),
         ),
       ),
-      home: ArtistProfilePage(
-        artistName: 'Luna Vortex',
-        genre: 'Synthwave / Eletrônico',
+      home: const ArtistProfilePage( // Agora ArtistProfilePage também pode ser const
+        artistName: 'Imagine Dragons',
+        genre: 'Rock',
         bio:
-            'Luna Vortex é uma produtora e DJ internacionalmente reconhecida por suas batidas envolventes e estética retrofuturista. Sua carreira decolou com trilhas sonoras para jogos e filmes de ficção científica, misturando nostalgia dos anos 80 com tecnologia moderna.',
+            'Imagine Dragons é uma banda de pop rock formada em Las Vegas nos Estados Unidos, consistindo do vocalista Dan Reynolds, do guitarrista Wayne Sermon e do baixista Ben McKee.',
         albums: [
-          'Neo Neon Dreams (2024)',
-          'Códigos e Frequências (2021)',
-          'Retro Atômico (2019)',
-          'Sombras de Neon (EP - 2017)',
+          'Loom (2024)',
+          'Mercury - act 1(2021)',
+          
         ],
-        featuredSong: 'Canção Destaque: "Céu de Leds"',
+        featuredSong: 'Música Destaque: "Radioactive"',
         awards: [
           'Melhor Álbum Eletrônico (2023)',
-          'DJ Revelação Internacional (2022)',
+          'Banda Revelação Internacional (2022)',
         ],
         socialLinks: {
-          'Instagram': 'https://instagram.com/luna_vortex_music',
-          'Spotify': 'https://spotify.com/artist/luna_vortex',
-          'YouTube': 'https://youtube.com/c/LunaVortexOfficial',
-          'Twitter': 'https://twitter.com/luna_vortex',
-          'Website': 'https://www.lunavortex.com',
+          'Instagram':'https://www.instagram.com/imaginedragons/',
+          'Spotify': 'https://spotify.com/artist/imaginedragons',
+          'YouTube': 'https://www.youtube.com/user/ImagineDragons',
         },
-        fansCount: 845320,
+        fansCount: 300000,
       ),
     );
   }
@@ -78,49 +77,13 @@ class ArtistProfilePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text('Perfil de $artistName'),
-        backgroundColor: Theme.of(context).colorScheme.primary,
-        foregroundColor: Theme.of(context).colorScheme.onPrimary,
-      ),
+      appBar: _ArtistAppBar(artistName: artistName),
       body: SingleChildScrollView(
         padding: const EdgeInsets.all(16.0),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Row(
-              children: [
-                const CircleAvatar(
-                  radius: 60,
-                  backgroundImage: NetworkImage('https://i.pravatar.cc/300?img=68'),
-                ),
-                const SizedBox(width: 16),
-                Expanded(
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(artistName, style: Theme.of(context).textTheme.headlineLarge),
-                      const SizedBox(height: 4),
-                      Text(
-                        genre,
-                        style: Theme.of(context).textTheme.bodyLarge!.copyWith(
-                              color: Theme.of(context).colorScheme.secondary,
-                              fontWeight: FontWeight.bold,
-                            ),
-                      ),
-                      const SizedBox(height: 8),
-                      Row(
-                        children: [
-                          const Icon(Icons.verified, color: Colors.blue, size: 16),
-                          const SizedBox(width: 4),
-                          Text('Verificado', style: Theme.of(context).textTheme.bodyMedium),
-                        ],
-                      ),
-                    ],
-                  ),
-                ),
-              ],
-            ),
+            _ArtistHeader(artistName: artistName, genre: genre),
             const SizedBox(height: 24),
             Text('Biografia', style: Theme.of(context).textTheme.headlineMedium),
             const SizedBox(height: 8),
@@ -133,16 +96,7 @@ class ArtistProfilePage extends StatelessWidget {
               child: ListView.builder(
                 scrollDirection: Axis.horizontal,
                 itemCount: albums.length,
-                itemBuilder: (context, index) {
-                  return Card(
-                    child: Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: Center(
-                        child: Text(albums[index], textAlign: TextAlign.center),
-                      ),
-                    ),
-                  );
-                },
+                itemBuilder: (context, index) => _AlbumListItem(album: albums[index]),
               ),
             ),
             const SizedBox(height: 16),
@@ -154,10 +108,7 @@ class ArtistProfilePage extends StatelessWidget {
             if (awards.isNotEmpty) ...[
               Text('Prêmios', style: Theme.of(context).textTheme.headlineMedium),
               const SizedBox(height: 8),
-              ...awards.map((award) => ListTile(
-                    leading: const Icon(Icons.military_tech, color: Colors.amber),
-                    title: Text(award, style: Theme.of(context).textTheme.bodyLarge),
-                  )),
+              ...awards.map((award) => _AwardListItem(award: award)),
             ],
             const SizedBox(height: 24),
             Text('Redes Sociais', style: Theme.of(context).textTheme.headlineMedium),
@@ -165,57 +116,171 @@ class ArtistProfilePage extends StatelessWidget {
             Wrap(
               spacing: 12,
               runSpacing: 12,
-              children: socialLinks.entries.map((socialLink) {
-                IconData icon;
-                switch (socialLink.key.toLowerCase()) {
-                  case 'instagram':
-                    icon = Icons.camera_alt;
-                    break;
-                  case 'spotify':
-                    icon = Icons.music_note;
-                    break;
-                  case 'youtube':
-                    icon = Icons.play_arrow;
-                    break;
-                  case 'twitter':
-                    icon = Icons.flutter_dash;
-                    break;
-                  case 'website':
-                    icon = Icons.web;
-                    break;
-                  default:
-                    icon = Icons.link;
-                }
-                return Column(
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    IconButton(
-                      icon: Icon(icon, color: Theme.of(context).colorScheme.primary),
-                      tooltip: socialLink.key,
-                      onPressed: () {
-                        print('Abrir ${socialLink.key}: ${socialLink.value}');
-                      },
-                    ),
-                    Text(socialLink.key, style: Theme.of(context).textTheme.bodyMedium),
-                  ],
-                );
-              }).toList(),
+              children: socialLinks.entries.map<Widget>((socialLink) => _SocialMediaIcon(socialLink: socialLink)).toList(),
             ),
             const SizedBox(height: 24),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                const Icon(Icons.people, color: Colors.grey),
-                const SizedBox(width: 8),
-                Text(
-                  '${NumberFormat.compact().format(fansCount)} Fãs',
-                  style: Theme.of(context).textTheme.bodyMedium,
-                ),
-              ],
-            ),
+            _FansCount(fansCount: fansCount),
           ],
         ),
       ),
+    );
+  }
+}
+
+class _ArtistAppBar extends StatelessWidget implements PreferredSizeWidget {
+  final String artistName;
+
+  const _ArtistAppBar({required this.artistName});
+
+  @override
+  Size get preferredSize => const Size.fromHeight(kToolbarHeight);
+
+  @override
+  Widget build(BuildContext context) {
+    return AppBar(
+      title: Text('Perfil de $artistName'),
+      backgroundColor: Theme.of(context).colorScheme.primary,
+      foregroundColor: Theme.of(context).colorScheme.onPrimary,
+    );
+  }
+}
+
+class _ArtistHeader extends StatelessWidget {
+  final String artistName;
+  final String genre;
+
+  const _ArtistHeader({required this.artistName, required this.genre});
+
+  @override
+  Widget build(BuildContext context) {
+    return Row(
+      children: [
+        const CircleAvatar(
+          radius: 60,
+          backgroundImage: NetworkImage('https://i.pravatar.cc/300?img=68'),
+        ),
+        const SizedBox(width: 16),
+        Expanded(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(artistName, style: Theme.of(context).textTheme.headlineLarge),
+              const SizedBox(height: 4),
+              Text(
+                genre,
+                style: Theme.of(context).textTheme.bodyLarge!.copyWith(
+                      color: Theme.of(context).colorScheme.secondary,
+                      fontWeight: FontWeight.bold,
+                    ),
+              ),
+              const SizedBox(height: 8),
+              const Row(
+                children: [
+                  Icon(Icons.verified, color: Colors.blue, size: 16),
+                  SizedBox(width: 4),
+                  Text('Verificado', style: TextStyle(fontSize: 14, color: Colors.black54)),
+                ],
+              ),
+            ],
+          ),
+        ),
+      ],
+    );
+  }
+}
+
+class _AlbumListItem extends StatelessWidget {
+  final String album;
+
+  const _AlbumListItem({required this.album});
+
+  @override
+  Widget build(BuildContext context) {
+    return Card(
+      child: Padding(
+        padding: const EdgeInsets.all(8.0),
+        child: Center(
+          child: Text(album, textAlign: TextAlign.center),
+        ),
+      ),
+    );
+  }
+}
+
+class _AwardListItem extends StatelessWidget {
+  final String award;
+
+  const _AwardListItem({required this.award});
+
+  @override
+  Widget build(BuildContext context) {
+    return ListTile(
+      leading: const Icon(Icons.military_tech, color: Colors.amber),
+      title: Text(award, style: Theme.of(context).textTheme.bodyLarge),
+    );
+  }
+}
+
+class _SocialMediaIcon extends StatelessWidget {
+  final MapEntry<String, String> socialLink;
+
+  const _SocialMediaIcon({required this.socialLink});
+
+  @override
+  Widget build(BuildContext context) {
+    IconData icon;
+    switch (socialLink.key.toLowerCase()) {
+      case 'instagram':
+        icon = Icons.camera_alt;
+        break;
+      case 'spotify':
+        icon = Icons.music_note;
+        break;
+      case 'youtube':
+        icon = Icons.play_arrow;
+        break;
+      case 'twitter':
+        icon = Icons.flutter_dash;
+        break;
+      case 'website':
+        icon = Icons.web;
+        break;
+      default:
+        icon = Icons.link;
+    }
+    return Column(
+      mainAxisSize: MainAxisSize.min,
+      children: [
+        IconButton(
+          icon: Icon(icon, color: Theme.of(context).colorScheme.primary),
+          tooltip: socialLink.key,
+          onPressed: () {
+            print('Abrir ${socialLink.key}: ${socialLink.value}');
+          },
+        ),
+        Text(socialLink.key, style: Theme.of(context).textTheme.bodyMedium),
+      ],
+    );
+  }
+}
+
+class _FansCount extends StatelessWidget {
+  final int fansCount;
+
+  const _FansCount({required this.fansCount});
+
+  @override
+  Widget build(BuildContext context) {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        const Icon(Icons.people, color: Colors.grey),
+        const SizedBox(width: 8),
+        Text(
+          '${NumberFormat.compact().format(fansCount)} Fãs',
+          style: Theme.of(context).textTheme.bodyMedium,
+        ),
+      ],
     );
   }
 }
