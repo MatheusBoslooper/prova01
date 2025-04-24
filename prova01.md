@@ -9,7 +9,7 @@
 
 # Tutorial Técnico - Componentes de Layout
 
-São descritos neste documento os componentes de layout mais relevantes utilizados nos três protótipos desenvolvidos:
+São descritos neste documento os componentes de layout mais relevantes utilizados nos dois protótipos desenvolvidos:
 
 - Perfil de Artista   
 - Calculadora de IMC  
