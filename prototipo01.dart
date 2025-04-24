@@ -1,3 +1,5 @@
+// CALCULADORA IMC
+
 import 'package:flutter/material.dart';
 
 void main() {
@@ -174,7 +176,7 @@ class _IMCCalculatorPageState extends State<IMCCalculatorPage>
               child: Column(
                 children: [
                   Text(
-                    'Calculadora de IMC',
+                    '',
                     style: TextStyle(
                       fontSize: 28,
                       fontWeight: FontWeight.bold,
