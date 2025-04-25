@@ -2,7 +2,7 @@
 
 - Amanda Baggio Azevedo
 - Matheus Henrique Boslooper  
-
+- Nickson Jean Ferreira Walachy
 ---
 
 # Tutorial Técnico - Componentes de Layout
@@ -26,7 +26,7 @@ Presente em todos os protótipos como contêiner principal da interface.
 ```dart
 Scaffold(
   appBar: AppBar(title: Text('Título')),
-  body: Center(child: Text('Conteúdo')),
+  body: Center(child: Text('Budega')),
 )
 ```
 
@@ -43,7 +43,7 @@ Utilizado para dar identidade visual ao app e facilitar a navegação.
 **Como usar**:
 ```dart
 AppBar(
-  title: Text('Título do App'),
+  title: Text('afrodite'),
 )
 ```
 
@@ -61,7 +61,7 @@ Utilizado nos dois protótipos para empilhar elementos como imagens, textos e bo
 ```dart
 Column(
   children: [
-    Text('Exemplo'),
+    Text('Ratata'),
     Icon(Icons.star),
   ],
 )
@@ -100,7 +100,7 @@ Presente em todos os protótipos para exibir títulos, biografias, resultados, e
 **Como usar**:
 ```dart
 Text(
-  'Texto de exemplo',
+  'Palavra teste',
   style: TextStyle(fontSize: 18),
 )
 ```
@@ -135,7 +135,7 @@ Usado na Calculadora de IMC para disparar o cálculo e em interações gerais.
 ```dart
 ElevatedButton(
   onPressed: () {},
-  child: Text('Clique aqui'),
+  child: Text('PRESSIONE AQUI'),
 )
 ```
 
@@ -189,7 +189,7 @@ Utilizado para destacar seções no Perfil de Artista.
 Card(
   child: Padding(
     padding: EdgeInsets.all(12.0),
-    child: Text('Conteúdo'),
+    child: Text('PARANÁ'),
   ),
 )
 ```
@@ -223,7 +223,7 @@ Utilizado para espaçamento e alinhamento de componentes.
 ```dart
 Padding(
   padding: EdgeInsets.all(16),
-  child: Text('Texto'),
+  child: Text('ABOBRINHA123'),
 )
 ```
 
